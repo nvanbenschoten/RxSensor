@@ -26,7 +26,7 @@ import rx.observers.TestSubscriber;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "ThrowableResultOfMethodCallIgnored"})
 public class RxSensorManagerTest extends TestCase {
 
     public void testNoSensorEventsObservable() throws Exception {
@@ -81,7 +81,6 @@ public class RxSensorManagerTest extends TestCase {
         rxSensorManager.listenToSensor(null, 0).subscribe(subscriber);
 
         assertEquals(subscriber.getOnErrorEvents().size(), 1);
-        //noinspection ThrowableResultOfMethodCallIgnored
         assertTrue(subscriber.getOnErrorEvents().get(0) instanceof SensorException);
     }
 
