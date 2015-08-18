@@ -34,13 +34,17 @@ import rx.Subscriber;
 import rx.functions.Action0;
 import rx.subscriptions.Subscriptions;
 
+/**
+ * A lightweight wrapper around {@link SensorManager} which allows for continuously observing
+ * the {@link SensorEvent} data.
+ */
 public final class RxSensorManager {
 
-    private final Handler sensorListenerHandler = new Handler(Looper.getMainLooper());
-
+    private final Handler mSensorListenerHandler;
     private final SensorManager mSensorManager;
 
     public RxSensorManager(@NonNull SensorManager sensorManager) {
+        mSensorListenerHandler = new Handler(Looper.getMainLooper());
         mSensorManager = sensorManager;
     }
 
@@ -69,10 +73,10 @@ public final class RxSensorManager {
                 };
                 if (ApiUtils.isKitKat()) {
                     mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
-                            maxReportLatencyUs, sensorListenerHandler);
+                            maxReportLatencyUs, mSensorListenerHandler);
                 } else {
                     mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
-                            sensorListenerHandler);
+                            mSensorListenerHandler);
                 }
                 subscriber.add(Subscriptions.create(new Action0() {
                     @Override
