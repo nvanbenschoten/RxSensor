@@ -98,7 +98,8 @@ public final class RxSensorManager {
                 }));
             }
         };
-        return Observable.create(subscribe);
+        return Observable.create(subscribe)
+                .lift(BackpressureBufferLastOperator.<SensorEvent>instance());
     }
 
 }
