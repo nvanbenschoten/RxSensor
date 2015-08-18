@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 22
@@ -33,7 +31,7 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'rxsensor'
 
-    publishedGroupId = 'com.nvanbenschoten'
+    publishedGroupId = 'com.nvanbenschoten.rxsensor'
     libraryName = 'RxSensor'
     artifact = 'rxsensor'
 

@@ -25,12 +25,12 @@ import rx.Subscriber;
  * This class was copied from Square's SqlBrite project, because its package visibility
  * prevented use of the class through the dependency.
  */
+@SuppressWarnings("unchecked")
 final class BackpressureBufferLastOperator<T> implements Operator<T, T> {
 
     static final Operator<Object, Object> instance = new BackpressureBufferLastOperator<>();
 
     static <T> Operator<T, T> instance() {
-        //noinspection unchecked
         return (Operator<T, T>) instance;
     }
 
