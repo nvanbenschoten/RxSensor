@@ -48,12 +48,24 @@ public final class RxSensorManager {
         mSensorManager = sensorManager;
     }
 
+    /**
+     * Create an observable which will notify subscribers with a {@link SensorEvent}. Sensor
+     * data will continue to be polled until the Observable's subscription is unsubscribed from.
+     *
+     * @see SensorManager#registerListener(SensorEventListener, Sensor, int)
+     */
     @CheckResult
     public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor,
                                                    final int samplingPeriodUs) {
         return listenForEvents(sensor, samplingPeriodUs, 0);
     }
 
+    /**
+     * Create an observable which will notify subscribers with a {@link SensorEvent}. Sensor
+     * data will continue to be polled until the Observable's subscription is unsubscribed from.
+     *
+     * @see SensorManager#registerListener(SensorEventListener, Sensor, int, int)
+     */
     @CheckResult
     public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor,
                                                    final int samplingPeriodUs,
