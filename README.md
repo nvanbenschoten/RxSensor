@@ -31,12 +31,12 @@ sensorObservable.subscribe(new Action1<SensorEvent>() {
 ## Download
 
 ```groovy
-compile 'com.nvanbenschoten.rxsensor:rxsensor:1.0.0'
+compile 'com.nvanbenschoten.rxsensor:rxsensor:1.0.1'
 ```
 
 ## License
 
-    Copyright 2014 Nathan VanBenschoten
+    Copyright 2015 Nathan VanBenschoten
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
