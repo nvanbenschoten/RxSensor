@@ -20,13 +20,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
-
-import com.nvanbenschoten.rxsensor.internal.ApiUtils;
 
 import rx.Observable;
 import rx.Observable.OnSubscribe;
@@ -83,7 +82,7 @@ public final class RxSensorManager {
                     @Override
                     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
                 };
-                if (ApiUtils.isKitKat()) {
+                if (Build.VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
                     mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
                             maxReportLatencyUs, mSensorListenerHandler);
                 } else {
