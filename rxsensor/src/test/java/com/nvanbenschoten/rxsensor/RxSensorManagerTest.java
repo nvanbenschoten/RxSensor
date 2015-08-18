@@ -43,7 +43,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenForEvents(null, 0).subscribe(subscriber);
+        rxSensorManager.listenToSensor(null, 0).subscribe(subscriber);
         subscriber.unsubscribe();
 
         verify(sensorManager).unregisterListener(any(SensorEventListener.class));
@@ -54,7 +54,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenForEvents(null, 0).subscribe(subscriber);
+        rxSensorManager.listenToSensor(null, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(0);
         subscriber.unsubscribe();
@@ -65,7 +65,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenForEvents(null, 0).subscribe(subscriber);
+        rxSensorManager.listenToSensor(null, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(1);
         subscriber.unsubscribe();
@@ -76,7 +76,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenForEvents(null, 0).subscribe(subscriber);
+        rxSensorManager.listenToSensor(null, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(3);
         subscriber.unsubscribe();

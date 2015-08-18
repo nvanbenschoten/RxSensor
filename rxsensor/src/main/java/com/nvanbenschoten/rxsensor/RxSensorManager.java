@@ -55,9 +55,9 @@ public final class RxSensorManager {
      * @see SensorManager#registerListener(SensorEventListener, Sensor, int)
      */
     @CheckResult
-    public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor,
-                                                   final int samplingPeriodUs) {
-        return listenForEvents(sensor, samplingPeriodUs, 0);
+    public Observable<SensorEvent> listenToSensor(@NonNull final Sensor sensor,
+                                                  final int samplingPeriodUs) {
+        return listenToSensor(sensor, samplingPeriodUs, 0);
     }
 
     /**
@@ -67,9 +67,9 @@ public final class RxSensorManager {
      * @see SensorManager#registerListener(SensorEventListener, Sensor, int, int)
      */
     @CheckResult
-    public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor,
-                                                   final int samplingPeriodUs,
-                                                   final int maxReportLatencyUs) {
+    public Observable<SensorEvent> listenToSensor(@NonNull final Sensor sensor,
+                                                  final int samplingPeriodUs,
+                                                  final int maxReportLatencyUs) {
         OnSubscribe<SensorEvent> subscribe = new OnSubscribe<SensorEvent>() {
             @TargetApi(VERSION_CODES.KITKAT)
             @Override
