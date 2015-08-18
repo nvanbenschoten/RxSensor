@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 22
@@ -7,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -26,3 +28,30 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
 }
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'rxsensor'
+
+    publishedGroupId = 'com.nvanbenschoten'
+    libraryName = 'RxSensor'
+    artifact = 'rxsensor'
+
+    libraryDescription = 'A lightweight wrapper around SensorManager which introduces reactive stream semantics to Sensor data.'
+
+    siteUrl = 'https://github.com/nvanbenschoten/RxSensor'
+    gitUrl = 'https://github.com/nvanbenschoten/RxSensor.git'
+    issueUrl = 'https://github.com/nvanbenschoten/RxSensor/issues'
+
+    libraryVersion = project.VERSION_NAME
+
+    developerId = 'nvanbenschoten'
+    developerName = 'Nathan VanBenschoten'
+    developerEmail = 'nvanbenschoten@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: rootProject.file('gradle/gradle-bintray-push.gradle')
