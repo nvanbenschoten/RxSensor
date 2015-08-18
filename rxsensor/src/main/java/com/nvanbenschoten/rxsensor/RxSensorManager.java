@@ -15,14 +15,18 @@
  */
 package com.nvanbenschoten.rxsensor;
 
+import android.annotation.TargetApi;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+
+import com.nvanbenschoten.rxsensor.internal.ApiUtils;
 
 import rx.Observable;
 import rx.Observable.OnSubscribe;
@@ -41,13 +45,17 @@ public final class RxSensorManager {
     }
 
     @CheckResult
-    public Observable<SensorEvent> listenForEvents(final Sensor sensor, final int samplingPeriodUs) {
+    public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor,
+                                                   final int samplingPeriodUs) {
         return listenForEvents(sensor, samplingPeriodUs, 0);
     }
 
     @CheckResult
-    public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor, final int samplingPeriodUs, final int maxReportLatencyUs) {
+    public Observable<SensorEvent> listenForEvents(@NonNull final Sensor sensor,
+                                                   final int samplingPeriodUs,
+                                                   final int maxReportLatencyUs) {
         OnSubscribe<SensorEvent> subscribe = new OnSubscribe<SensorEvent>() {
+            @TargetApi(VERSION_CODES.KITKAT)
             @Override
             public void call(final Subscriber<? super SensorEvent> subscriber) {
                 final SensorEventListener listener = new SensorEventListener() {
@@ -59,7 +67,13 @@ public final class RxSensorManager {
                     @Override
                     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
                 };
-                mSensorManager.registerListener(listener, sensor, samplingPeriodUs, maxReportLatencyUs, sensorListenerHandler);
+                if (ApiUtils.isKitKat()) {
+                    mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
+                            maxReportLatencyUs, sensorListenerHandler);
+                } else {
+                    mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
+                            sensorListenerHandler);
+                }
                 subscriber.add(Subscriptions.create(new Action0() {
                     @Override
                     public void call() {
