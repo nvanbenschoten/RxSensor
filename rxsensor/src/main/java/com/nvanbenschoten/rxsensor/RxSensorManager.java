@@ -82,19 +82,27 @@ public final class RxSensorManager {
                     @Override
                     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
                 };
+
+                boolean success;
                 if (Build.VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-                    mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
+                    success = mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
                             maxReportLatencyUs, mSensorListenerHandler);
                 } else {
-                    mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
+                    success = mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
                             mSensorListenerHandler);
                 }
-                subscriber.add(Subscriptions.create(new Action0() {
-                    @Override
-                    public void call() {
-                        mSensorManager.unregisterListener(listener);
-                    }
-                }));
+
+                if (!success) {
+                    subscriber.onError(new SensorException());
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.add(Subscriptions.create(new Action0() {
+                        @Override
+                        public void call() {
+                            mSensorManager.unregisterListener(listener);
+                        }
+                    }));
+                }
             }
         };
         return Observable.create(subscribe)
