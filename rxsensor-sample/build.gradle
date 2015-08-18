@@ -1,0 +1,28 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "23.0.0"
+
+    defaultConfig {
+        applicationId "com.example.nvanbenschoten.rxsensor"
+        minSdkVersion 21
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    // In-repo dependencies.
+    compile project(':rxsensor')
+
+    // Rx libraries
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.1.0'
+    compile 'com.trello:rxlifecycle:0.1.0'
+    compile 'com.trello:rxlifecycle-components:0.1.0'
+
+    // Other libraries
+    compile 'com.jakewharton:butterknife:7.0.1'
+}
