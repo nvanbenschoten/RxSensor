@@ -30,7 +30,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @SuppressWarnings({"ConstantConditions", "ThrowableResultOfMethodCallIgnored"})
-public class RxSensorManagerTest extends TestCase {
+public class SensorEventsTest extends TestCase {
 
     public void testNoSensorEventsObservable() throws Exception {
         SensorManager sensorManager = SensorTestUtils.mockSensorManager(0);
@@ -66,7 +66,7 @@ public class RxSensorManagerTest extends TestCase {
     }
 
     public void testSensorListenerUnregistered() throws Exception {
-        SensorManager sensorManager = SensorTestUtils.mockSensorManager(0);
+        SensorManager sensorManager = SensorTestUtils.mockSensorManager();
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
@@ -77,7 +77,7 @@ public class RxSensorManagerTest extends TestCase {
     }
 
     public void testSensorArgumentError() throws Exception {
-        SensorManager sensorManager = SensorTestUtils.mockSensorManager(0);
+        SensorManager sensorManager = SensorTestUtils.mockSensorManager();
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
