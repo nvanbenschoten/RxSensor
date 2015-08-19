@@ -18,7 +18,7 @@ methods.
 
 ```java
 Observable<SensorEvent> sensorObservable =
-        rxSensorManager.listenToSensor(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_NORMAL);
+        rxSensorManager.observe(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_NORMAL);
 sensorObservable.subscribe(new Action1<SensorEvent>() {
     @Override public void call(SensorEvent event) {
         // TODO react to event...

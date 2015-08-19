@@ -36,7 +36,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenToSensor(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(0);
         subscriber.unsubscribe();
@@ -47,7 +47,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenToSensor(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(1);
         subscriber.unsubscribe();
@@ -58,7 +58,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenToSensor(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(3);
         subscriber.unsubscribe();
@@ -69,7 +69,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenToSensor(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
         subscriber.unsubscribe();
 
         verify(sensorManager).unregisterListener(any(SensorEventListener.class));
@@ -80,7 +80,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenToSensor(BAD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observe(BAD_SENSOR, 0).subscribe(subscriber);
 
         assertEquals(subscriber.getOnErrorEvents().size(), 1);
         assertTrue(subscriber.getOnErrorEvents().get(0) instanceof SensorException);
@@ -91,7 +91,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.listenToSensor(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
 
         assertEquals(subscriber.getOnErrorEvents().size(), 1);
         assertTrue(subscriber.getOnErrorEvents().get(0) instanceof SensorException);
