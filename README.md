@@ -11,6 +11,8 @@ SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 ```
 
+#### observeSensor()
+
 This reactive implementation of a SensorManager exposes methods to listen to a specific `Sensor`
 as an `Observable<SensorEvent>` stream. These methods correspond roughly to SensorManager's various
 supported [registerListener](http://developer.android.com/reference/android/hardware/SensorManager.html#registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int))
@@ -21,6 +23,27 @@ Observable<SensorEvent> sensorObservable =
         rxSensorManager.observeSensor(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_NORMAL);
 sensorObservable.subscribe(new Action1<SensorEvent>() {
     @Override public void call(SensorEvent event) {
+        // TODO react to event...
+    }
+});
+```
+
+#### observeSensor()
+
+In addition to observing `SensorEvent` streams, `RxSensorManager` also provides the functionality to
+observe a `TriggerEvent`. This method roughly corresponds to SensorManager's
+[requestTriggerSensor](http://developer.android.com/reference/android/hardware/SensorManager.html#requestTriggerSensor(android.hardware.TriggerEventListener, android.hardware.Sensor))
+method.
+
+**NOTE** While this library targets API 9 and above, TriggerEvents are only supported on API 18 and
+above. This means that observeSensor also targets API 18 and will throw an exception if used on a
+low API level.
+
+```java
+Observable<TriggerEvent> triggerObservable =
+        rxSensorManager.observeTrigger(Sensor.TYPE_SIGNIFICANT_MOTION);
+triggerObservable.subscribe(new Action1<TriggerEvent>() {
+    @Override public void call(TriggerEvent event) {
         // TODO react to event...
     }
 });
