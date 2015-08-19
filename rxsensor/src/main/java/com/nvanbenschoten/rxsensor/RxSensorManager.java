@@ -36,8 +36,8 @@ import rx.functions.Action0;
 import rx.subscriptions.Subscriptions;
 
 /**
- * A lightweight wrapper around {@link SensorManager} which allows for continuously observing
- * the {@link SensorEvent} data.
+ * A lightweight wrapper around {@link SensorManager} which allows for continuous observations of
+ * {@link SensorEvent} data and single observations of {@link TriggerEvent} occurrences.
  */
 public final class RxSensorManager {
 

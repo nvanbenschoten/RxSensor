@@ -1,5 +1,5 @@
 # RxSensor [ ![Download](https://api.bintray.com/packages/nvanbenschoten/maven/rxsensor/images/download.svg) ](https://bintray.com/nvanbenschoten/maven/rxsensor/_latestVersion)
-A lightweight wrapper around SensorManager which introduces reactive stream semantics to Sensor data.
+A lightweight wrapper around SensorManager which introduces reactive stream semantics to Sensor and Trigger data.
 
 ## Usage
 

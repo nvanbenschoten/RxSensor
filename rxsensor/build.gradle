@@ -35,7 +35,7 @@ ext {
     libraryName = 'RxSensor'
     artifact = 'rxsensor'
 
-    libraryDescription = 'A lightweight wrapper around SensorManager which introduces reactive stream semantics to Sensor data.'
+    libraryDescription = 'A lightweight wrapper around SensorManager which introduces reactive stream semantics to Sensor and Trigger data.'
 
     siteUrl = 'https://github.com/nvanbenschoten/RxSensor'
     gitUrl = 'https://github.com/nvanbenschoten/RxSensor.git'
