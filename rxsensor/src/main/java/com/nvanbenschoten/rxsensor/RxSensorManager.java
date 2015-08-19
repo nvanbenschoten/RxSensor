@@ -77,7 +77,6 @@ public final class RxSensorManager {
                 final Sensor sensor = mSensorManager.getDefaultSensor(sensorType);
                 if (sensor == null) {
                     subscriber.onError(new SensorException());
-                    subscriber.onCompleted();
                     return;
                 }
 
@@ -103,7 +102,6 @@ public final class RxSensorManager {
                 }
                 if (!success) {
                     subscriber.onError(new SensorException(sensor));
-                    subscriber.onCompleted();
                     return;
                 }
 

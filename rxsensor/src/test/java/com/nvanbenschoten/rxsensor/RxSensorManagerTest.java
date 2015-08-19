@@ -15,6 +15,7 @@
  */
 package com.nvanbenschoten.rxsensor;
 
+import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -72,7 +73,7 @@ public class RxSensorManagerTest extends TestCase {
         rxSensorManager.observeSensor(GOOD_SENSOR, 0).subscribe(subscriber);
         subscriber.unsubscribe();
 
-        verify(sensorManager).unregisterListener(any(SensorEventListener.class));
+        verify(sensorManager).unregisterListener(any(SensorEventListener.class), any(Sensor.class));
     }
 
     public void testSensorArgumentError() throws Exception {
