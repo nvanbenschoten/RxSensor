@@ -102,7 +102,7 @@ public final class RxSensorManager {
                             mSensorListenerHandler);
                 }
                 if (!success) {
-                    subscriber.onError(new SensorException());
+                    subscriber.onError(new SensorException(sensor));
                     subscriber.onCompleted();
                     return;
                 }
