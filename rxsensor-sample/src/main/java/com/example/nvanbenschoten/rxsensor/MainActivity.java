@@ -67,8 +67,8 @@ public class MainActivity extends RxActivity {
                     @Override
                     public Observable<? extends SensorEvent> call(Boolean checked) {
                         if (checked) {
-                            return mRxSensorManager.observe(Sensor.TYPE_ACCELEROMETER,
-                                                            SensorManager.SENSOR_DELAY_NORMAL);
+                            return mRxSensorManager.observeSensor(Sensor.TYPE_ACCELEROMETER,
+                                    SensorManager.SENSOR_DELAY_NORMAL);
                         } else {
                             return Observable.empty();
                         }
