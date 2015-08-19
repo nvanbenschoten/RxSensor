@@ -74,7 +74,7 @@ public final class RxSensorManager {
             @Override
             public void call(final Subscriber<? super SensorEvent> subscriber) {
                 // Determine Sensor to use
-                Sensor sensor = mSensorManager.getDefaultSensor(sensorType);
+                final Sensor sensor = mSensorManager.getDefaultSensor(sensorType);
                 if (sensor == null) {
                     subscriber.onError(new SensorException());
                     subscriber.onCompleted();
@@ -111,7 +111,7 @@ public final class RxSensorManager {
                 subscriber.add(Subscriptions.create(new Action0() {
                     @Override
                     public void call() {
-                        mSensorManager.unregisterListener(listener);
+                        mSensorManager.unregisterListener(listener, sensor);
                     }
                 }));
             }
