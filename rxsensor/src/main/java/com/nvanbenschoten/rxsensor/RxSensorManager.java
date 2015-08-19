@@ -20,6 +20,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Handler;
@@ -116,6 +118,54 @@ public final class RxSensorManager {
         };
         return Observable.create(subscribe)
                 .lift(BackpressureBufferLastOperator.<SensorEvent>instance());
+    }
+
+    /**
+     * Create an observable which will notify subscribers with a {@link TriggerEvent} once and
+     * then complete.
+     *
+     * @see SensorManager#requestTriggerSensor(TriggerEventListener, Sensor)
+     */
+    @CheckResult
+    @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
+    public Observable<TriggerEvent> observeTrigger(final int sensorType) {
+        OnSubscribe<TriggerEvent> subscribe = new OnSubscribe<TriggerEvent>() {
+            @Override
+            public void call(final Subscriber<? super TriggerEvent> subscriber) {
+                // Determine Sensor to use
+                final Sensor sensor = mSensorManager.getDefaultSensor(sensorType);
+                if (sensor == null) {
+                    subscriber.onError(new SensorException());
+                    return;
+                }
+
+                // Create TriggerEventListener that publishes a single onTrigger events to
+                // subscriber and completes
+                final TriggerEventListener listener = new TriggerEventListener() {
+                    @Override
+                    public void onTrigger(TriggerEvent event) {
+                        subscriber.onNext(event);
+                        subscriber.onCompleted();
+                    }
+                };
+
+                // Attempt to request a trigger sensor from SensorManager
+                boolean success = mSensorManager.requestTriggerSensor(listener, sensor);
+                if (!success) {
+                    subscriber.onError(new SensorException(sensor));
+                    return;
+                }
+
+                // Set action on un-subscribe
+                subscriber.add(Subscriptions.create(new Action0() {
+                    @Override
+                    public void call() {
+                        mSensorManager.cancelTriggerSensor(listener, sensor);
+                    }
+                }));
+            }
+        };
+        return Observable.create(subscribe);
     }
 
 }
