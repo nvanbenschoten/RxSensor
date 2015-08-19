@@ -18,10 +18,12 @@ package com.example.nvanbenschoten.rxsensor;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.nvanbenschoten.rxsensor.RxSensorManager;
@@ -41,6 +43,7 @@ public class MainActivity extends RxActivity {
     @Bind(R.id.sensor_data_0) TextView mSensorData0;
     @Bind(R.id.sensor_data_1) TextView mSensorData1;
     @Bind(R.id.sensor_data_2) TextView mSensorData2;
+    @Bind(R.id.trigger_switch) Switch mTriggerSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class MainActivity extends RxActivity {
         // Prepare sensor objects
         setupSensorManager();
 
-        // Set up Rx Chain
+        // Set up Rx Chains
         RxCompoundButton.checkedChanges(mSensorSwitch)
                 .doOnNext(new Action1<Boolean>() {
                     @Override
@@ -81,6 +84,34 @@ public class MainActivity extends RxActivity {
                         mSensorData0.setText(Float.toString(sensorEvent.values[0]));
                         mSensorData1.setText(Float.toString(sensorEvent.values[1]));
                         mSensorData2.setText(Float.toString(sensorEvent.values[2]));
+                    }
+                });
+
+        RxCompoundButton.checkedChanges(mTriggerSwitch)
+                .doOnNext(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean checked) {
+                        mTriggerSwitch.setEnabled(!checked);
+                    }
+                })
+                .filter(new Func1<Boolean, Boolean>() {
+                    @Override
+                    public Boolean call(Boolean checked) {
+                        return checked;
+                    }
+                })
+                .switchMap(new Func1<Boolean, Observable<? extends TriggerEvent>>() {
+                    @Override
+                    public Observable<? extends TriggerEvent> call(Boolean aBoolean) {
+                        return mRxSensorManager.observeTrigger(Sensor.TYPE_SIGNIFICANT_MOTION);
+                    }
+                })
+                .compose(this.<TriggerEvent>bindToLifecycle())
+                .subscribe(new Action1<TriggerEvent>() {
+                    @Override
+                    public void call(TriggerEvent triggerEvent) {
+                        Toast.makeText(MainActivity.this, "Trigger event at: " + triggerEvent.timestamp, Toast.LENGTH_LONG).show();
+                        mTriggerSwitch.setChecked(false);
                     }
                 });
     }

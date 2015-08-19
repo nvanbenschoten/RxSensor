@@ -16,5 +16,6 @@
 <resources>
     <string name="app_name">RxSensor Sample</string>
 
-    <string name="sensor_data">Sensor Data:</string>
+    <string name="sensor_data">Sensor Event Data:</string>
+    <string name="trigger_data">Trigger Event:</string>
 </resources>
