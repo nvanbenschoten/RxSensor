@@ -57,7 +57,7 @@ public class TriggerEventsTest extends TestCase {
         verify(sensorManager).cancelTriggerSensor(any(TriggerEventListener.class), any(Sensor.class));
     }
 
-    public void testSensorArgumentError() throws Exception {
+    public void testTriggerArgumentError() throws Exception {
         SensorManager sensorManager = SensorTestUtils.mockSensorManager();
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
@@ -68,7 +68,7 @@ public class TriggerEventsTest extends TestCase {
         assertTrue(subscriber.getOnErrorEvents().get(0) instanceof SensorException);
     }
 
-    public void testSensorRegistrationError() throws Exception {
+    public void testTriggerRequestError() throws Exception {
         SensorManager sensorManager = SensorTestUtils.mockBadSensorManager();
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
