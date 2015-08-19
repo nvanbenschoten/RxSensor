@@ -28,16 +28,16 @@ sensorObservable.subscribe(new Action1<SensorEvent>() {
 });
 ```
 
-#### observeSensor()
+#### observeTrigger()
 
 In addition to observing `SensorEvent` streams, `RxSensorManager` also provides the functionality to
 observe a `TriggerEvent`. This method roughly corresponds to SensorManager's
 [requestTriggerSensor](http://developer.android.com/reference/android/hardware/SensorManager.html#requestTriggerSensor(android.hardware.TriggerEventListener, android.hardware.Sensor))
 method.
 
-**NOTE** While this library targets API 9 and above, TriggerEvents are only supported on API 18 and
-above. This means that observeSensor also targets API 18 and will throw an exception if used on a
-low API level.
+**NOTE:** While this library targets **API 9** and above, TriggerEvents are only supported on
+**API 18** and above. This means that observeSensor also targets API 18 and will throw an exception
+if used on a low API level.
 
 ```java
 Observable<TriggerEvent> triggerObservable =
@@ -52,7 +52,7 @@ triggerObservable.subscribe(new Action1<TriggerEvent>() {
 ## Download
 
 ```groovy
-compile 'com.nvanbenschoten.rxsensor:rxsensor:1.0.2'
+compile 'com.nvanbenschoten.rxsensor:rxsensor:1.1.0'
 ```
 
 ## License
