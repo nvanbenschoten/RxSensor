@@ -15,6 +15,7 @@
  */
 package com.nvanbenschoten.rxsensor;
 
+import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -29,14 +30,14 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @SuppressWarnings({"ConstantConditions", "ThrowableResultOfMethodCallIgnored"})
-public class RxSensorManagerTest extends TestCase {
+public class SensorEventsTest extends TestCase {
 
     public void testNoSensorEventsObservable() throws Exception {
         SensorManager sensorManager = SensorTestUtils.mockSensorManager(0);
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observeSensor(GOOD_SENSOR, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(0);
         subscriber.unsubscribe();
@@ -47,7 +48,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observeSensor(GOOD_SENSOR, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(1);
         subscriber.unsubscribe();
@@ -58,29 +59,29 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observeSensor(GOOD_SENSOR, 0).subscribe(subscriber);
 
         subscriber.assertValueCount(3);
         subscriber.unsubscribe();
     }
 
     public void testSensorListenerUnregistered() throws Exception {
-        SensorManager sensorManager = SensorTestUtils.mockSensorManager(0);
+        SensorManager sensorManager = SensorTestUtils.mockSensorManager();
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observeSensor(GOOD_SENSOR, 0).subscribe(subscriber);
         subscriber.unsubscribe();
 
-        verify(sensorManager).unregisterListener(any(SensorEventListener.class));
+        verify(sensorManager).unregisterListener(any(SensorEventListener.class), any(Sensor.class));
     }
 
     public void testSensorArgumentError() throws Exception {
-        SensorManager sensorManager = SensorTestUtils.mockSensorManager(0);
+        SensorManager sensorManager = SensorTestUtils.mockSensorManager();
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observe(BAD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observeSensor(BAD_SENSOR, 0).subscribe(subscriber);
 
         assertEquals(subscriber.getOnErrorEvents().size(), 1);
         assertTrue(subscriber.getOnErrorEvents().get(0) instanceof SensorException);
@@ -91,7 +92,7 @@ public class RxSensorManagerTest extends TestCase {
         RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observe(GOOD_SENSOR, 0).subscribe(subscriber);
+        rxSensorManager.observeSensor(GOOD_SENSOR, 0).subscribe(subscriber);
 
         assertEquals(subscriber.getOnErrorEvents().size(), 1);
         assertTrue(subscriber.getOnErrorEvents().get(0) instanceof SensorException);

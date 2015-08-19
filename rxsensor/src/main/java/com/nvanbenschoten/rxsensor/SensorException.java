@@ -17,6 +17,7 @@ package com.nvanbenschoten.rxsensor;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
 
 /**
  * Custom exception corresponding to a failure of a {@link SensorManager} to
@@ -27,6 +28,10 @@ public class SensorException extends Exception {
 
     public SensorException() {
         super("Sensor not available");
+    }
+
+    public SensorException(@NonNull Sensor sensor) {
+        super("Sensor not available: " + sensor.getName());
     }
 
 }
