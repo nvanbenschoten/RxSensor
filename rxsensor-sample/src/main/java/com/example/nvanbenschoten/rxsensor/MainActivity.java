@@ -85,6 +85,12 @@ public class MainActivity extends RxActivity {
                         mSensorData1.setText(Float.toString(sensorEvent.values[1]));
                         mSensorData2.setText(Float.toString(sensorEvent.values[2]));
                     }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(MainActivity.this, "Error caught observing sensor: " +
+                                throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 });
 
         RxCompoundButton.checkedChanges(mTriggerSwitch)
@@ -110,8 +116,15 @@ public class MainActivity extends RxActivity {
                 .subscribe(new Action1<TriggerEvent>() {
                     @Override
                     public void call(TriggerEvent triggerEvent) {
-                        Toast.makeText(MainActivity.this, "Trigger event at: " + triggerEvent.timestamp, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Trigger event at: " +
+                                triggerEvent.timestamp, Toast.LENGTH_LONG).show();
                         mTriggerSwitch.setChecked(false);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(MainActivity.this, "Error caught observing trigger: " +
+                                throwable.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
