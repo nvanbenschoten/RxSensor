@@ -54,9 +54,9 @@ public final class RxSensorManager {
      * @see SensorManager#registerListener(SensorEventListener, Sensor, int)
      */
     @CheckResult
-    public Observable<SensorEvent> listenToSensor(@NonNull final Sensor sensor,
+    public Observable<SensorEvent> listenToSensor(final int sensorType,
                                                   final int samplingPeriodUs) {
-        return listenToSensor(sensor, samplingPeriodUs, 0);
+        return listenToSensor(sensorType, samplingPeriodUs, 0);
     }
 
     /**
@@ -66,13 +66,22 @@ public final class RxSensorManager {
      * @see SensorManager#registerListener(SensorEventListener, Sensor, int, int)
      */
     @CheckResult
-    public Observable<SensorEvent> listenToSensor(@NonNull final Sensor sensor,
+    public Observable<SensorEvent> listenToSensor(final int sensorType,
                                                   final int samplingPeriodUs,
                                                   final int maxReportLatencyUs) {
         OnSubscribe<SensorEvent> subscribe = new OnSubscribe<SensorEvent>() {
             @TargetApi(VERSION_CODES.KITKAT)
             @Override
             public void call(final Subscriber<? super SensorEvent> subscriber) {
+                // Determine Sensor to use
+                Sensor sensor = mSensorManager.getDefaultSensor(sensorType);
+                if (sensor == null) {
+                    subscriber.onError(new SensorException());
+                    subscriber.onCompleted();
+                    return;
+                }
+
+                // Create SensorEventListener that publishes onSensorChanged events to subscriber
                 final SensorEventListener listener = new SensorEventListener() {
                     @Override
                     public void onSensorChanged(SensorEvent event) {
@@ -83,6 +92,7 @@ public final class RxSensorManager {
                     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
                 };
 
+                // Attempt to register listener to SensorManager
                 boolean success;
                 if (Build.VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
                     success = mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
@@ -91,18 +101,19 @@ public final class RxSensorManager {
                     success = mSensorManager.registerListener(listener, sensor, samplingPeriodUs,
                             mSensorListenerHandler);
                 }
-
                 if (!success) {
                     subscriber.onError(new SensorException());
                     subscriber.onCompleted();
-                } else {
-                    subscriber.add(Subscriptions.create(new Action0() {
-                        @Override
-                        public void call() {
-                            mSensorManager.unregisterListener(listener);
-                        }
-                    }));
+                    return;
                 }
+
+                // Set action on un-subscribe
+                subscriber.add(Subscriptions.create(new Action0() {
+                    @Override
+                    public void call() {
+                        mSensorManager.unregisterListener(listener);
+                    }
+                }));
             }
         };
         return Observable.create(subscribe)

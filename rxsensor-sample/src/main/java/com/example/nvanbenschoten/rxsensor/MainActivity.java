@@ -36,7 +36,6 @@ import rx.functions.Func1;
 public class MainActivity extends RxActivity {
 
     private RxSensorManager mRxSensorManager;
-    private Sensor mAccelerometer;
 
     @Bind(R.id.sensor_switch) Switch mSensorSwitch;
     @Bind(R.id.sensor_data_0) TextView mSensorData0;
@@ -68,8 +67,8 @@ public class MainActivity extends RxActivity {
                     @Override
                     public Observable<? extends SensorEvent> call(Boolean checked) {
                         if (checked) {
-                            return mRxSensorManager.listenToSensor(mAccelerometer,
-                                    SensorManager.SENSOR_DELAY_NORMAL);
+                            return mRxSensorManager.listenToSensor(Sensor.TYPE_ACCELEROMETER,
+                                                                   SensorManager.SENSOR_DELAY_NORMAL);
                         } else {
                             return Observable.empty();
                         }
@@ -89,7 +88,6 @@ public class MainActivity extends RxActivity {
     private void setupSensorManager() {
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mRxSensorManager = new RxSensorManager(sensorManager);
-        mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     private void showData() {

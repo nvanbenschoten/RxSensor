@@ -32,16 +32,22 @@ import static org.mockito.Mockito.when;
 
 class SensorTestUtils {
 
+    public static final int GOOD_SENSOR = 0;
+    public static final int BAD_SENSOR = 1;
+
     public static SensorManager mockSensorManager(final int events) {
         return mockSensorManager(events, true);
     }
 
-    public static SensorManager mockSensorManager(final boolean result) {
-        return mockSensorManager(0, result);
+    public static SensorManager mockBadSensorManager() {
+        return mockSensorManager(0, false);
     }
 
     private static SensorManager mockSensorManager(final int events, final boolean result) {
         SensorManager sensorManager = mock(SensorManager.class);
+
+        when(sensorManager.getDefaultSensor(GOOD_SENSOR)).thenReturn(mockSensor());
+        when(sensorManager.getDefaultSensor(BAD_SENSOR)).thenReturn(null);
 
         final ArgumentCaptor<SensorEventListener> argument = ArgumentCaptor.forClass(SensorEventListener.class);
         when(sensorManager.registerListener(argument.capture(), any(Sensor.class), anyInt(), any(Handler.class)))
@@ -58,7 +64,11 @@ class SensorTestUtils {
         return sensorManager;
     }
 
-    public static SensorEvent mockSensorEvent() {
+    private static Sensor mockSensor() {
+        return mock(Sensor.class);
+    }
+
+    private static SensorEvent mockSensorEvent() {
         return mock(SensorEvent.class);
     }
 

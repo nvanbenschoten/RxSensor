@@ -12,15 +12,13 @@ RxSensorManager rxSensorManager = new RxSensorManager(sensorManager);
 ```
 
 This reactive implementation of a SensorManager exposes methods to listen to a specific `Sensor`
-as an `Observable<SensorEvent>` stream. These methods correspond to SensorManager's various supported
-[registerListener](http://developer.android.com/reference/android/hardware/SensorManager.html#registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int))
+as an `Observable<SensorEvent>` stream. These methods correspond roughly to SensorManager's various
+supported [registerListener](http://developer.android.com/reference/android/hardware/SensorManager.html#registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int))
 methods.
 
 ```java
-Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
 Observable<SensorEvent> sensorObservable =
-        rxSensorManager.listenToSensor(accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        rxSensorManager.listenToSensor(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_NORMAL);
 sensorObservable.subscribe(new Action1<SensorEvent>() {
     @Override public void call(SensorEvent event) {
         // TODO react to event...
