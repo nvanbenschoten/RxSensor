@@ -117,7 +117,7 @@ public final class RxSensorManager {
             }
         };
         return Observable.create(subscribe)
-                .lift(BackpressureBufferLastOperator.<SensorEvent>instance());
+                .onBackpressureLatest();
     }
 
     /**
