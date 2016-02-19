@@ -52,7 +52,7 @@ triggerObservable.subscribe(new Action1<TriggerEvent>() {
 ## Download
 
 ```groovy
-compile 'com.nvanbenschoten.rxsensor:rxsensor:1.1.0'
+compile 'com.nvanbenschoten.rxsensor:rxsensor:1.1.1'
 ```
 
 ## License
